@@ -1,5 +1,9 @@
 package com.liu.studentmanagement.controller;
-import com.liu.studentmanagement.Service.StudentService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.Mapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.liu.studentmanagement.Service.StudentServiceImpl;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
@@ -13,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     @Autowired
-    private StudentService studentService;
+    private StudentServiceImpl studentService;
+    @Autowired
+    private Mapper mapper;
 
 
     /**
@@ -21,7 +27,7 @@ public class StudentController {
      */
     @PostMapping("/add")
     public Result<?> add(@RequestBody Student student) {
-        studentService.addStudent(student); // 脏活累活交给 Service
+        studentService.save(student);
         return Result.success(null);
     }
 
@@ -36,10 +42,21 @@ public class StudentController {
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String name) {
 
-        // 直接调 Service，不管怎么算的
-        PageResult<Student> pageResult = studentService.getStudentPage(pageNum, pageSize, name);
+        // 1. 准备 MP 的分页参数
+        Page<Student> pageParam = new Page<>(pageNum, pageSize);
 
-        return Result.success(pageResult);
+        // 2. 构建查询条件
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(name != null, Student::getName, name);
+
+
+        // 3. 执行查询
+        IPage<Student> mpPage = studentService.page(pageParam, wrapper);
+        PageResult<Student> finalResult = new PageResult<>(
+                mpPage.getRecords(),
+                mpPage.getTotal()
+        );
+        return Result.success(finalResult);
     }
 
     /**
@@ -47,13 +64,13 @@ public class StudentController {
      */
     @DeleteMapping("/delete/{id}") // 稍微规范一点，用 @DeleteMapping
     public Result<?> delete(@PathVariable Integer id) {
-        studentService.deleteStudent(id);
+        studentService.removeById(id);
         return Result.success(null);
     }
 
     @PutMapping("/update")
     public Result<?> update(@RequestBody Student student) {
-        studentService.updateStudent(student);
+        studentService.updateById(student);
         return Result.success(null);
     }
 
