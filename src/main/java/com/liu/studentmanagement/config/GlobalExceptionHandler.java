@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.config;
 import java.util.stream.Collectors;
 import com.liu.studentmanagement.common.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(";"));
         // 返回 400 状态码，表示请求参数有问题
         return Result.error("400", message);
+    }
+
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    public Result<?> handleDuplicateKeyException(DuplicateKeyException e) {
+        return Result.error("400", "数据重复：该学号或ID已存在，请检查！");
     }
 
 

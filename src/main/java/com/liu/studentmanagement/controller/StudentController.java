@@ -29,7 +29,7 @@ public class StudentController {
     @PostMapping("/add")
     @Operation(summary = "新增学生") // 🌟 描述这个接口
     public Result<?> add(@RequestBody @Validated Student student) {
-        studentService.save(student);
+        studentService.addStudent(student);
         return Result.success(null);
     }
 
@@ -75,8 +75,18 @@ public class StudentController {
     @PutMapping("/update")
     @Operation(summary = "更新学生信息") // 🌟 描述这个接口
     public Result<?> update(@RequestBody @Validated Student student) {
-        studentService.updateById(student);
+        studentService.updateStudent(student);
         return Result.success(null);
+    }
+
+    @GetMapping("/search/{id}")
+    @Operation(summary = "查找学生信息通过id")
+    public Result<?> searchStudentClassById(@PathVariable Integer id) {
+        Student student = studentService.getById(id);
+        if (student == null) {
+            return Result.error("404", "找不到该学生");
+        }
+        return Result.success(student);
     }
 
 

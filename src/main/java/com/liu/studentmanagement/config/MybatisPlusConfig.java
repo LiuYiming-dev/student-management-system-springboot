@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.liu.studentmanagement.mapper") // 扫描你的 mapper
+@MapperScan("com.liu.studentmanagement.mapper")// 扫描你的 mapper
 public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

@@ -2,10 +2,7 @@ package com.liu.studentmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.Data; // Lombok注解
 
 
@@ -27,6 +24,10 @@ public class Student {
     @NotBlank(message = "姓名不能为空")// 字符串不能为 null 且 trim() 后长度 > 0
     private String name;
 
+    @Schema(description = "班级")
+    @NotNull(message = "班级不能为空")
+    private Integer clazzId;
+
     @Schema(description = "年龄")
     @Min(value = 0, message = "年龄不能小于0岁")
     @Max(value = 120, message = "年龄不能大于120岁")
@@ -44,4 +45,6 @@ public class Student {
     @Schema(description = "更新时间")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+
+
 }
