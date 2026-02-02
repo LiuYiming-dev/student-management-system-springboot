@@ -10,18 +10,23 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 
 
-    public boolean updateStudent(Student student) {
-        // 1. 调用 MP 的 updateById
-        boolean success = this.updateById(student);
 
-        // 2. 🌟 关键点：检查返回值
-        // 如果 success 是 false，说明数据库里没这个 ID
-        if (!success) {
-            // 手动抛出异常，让 GlobalExceptionHandler 捕获它
-            throw new RuntimeException("修改失败，学生ID不存在！");
+    private Student ensureStudentExists(Integer id) {
+        Student student = this.getById(id);
+        if (student == null) {
+            throw new RuntimeException("操作失败：学号为 " + id + " 的学生不存在！");
         }
+        return student;
+    }
 
-        return true;
+    public void deleteStudent(Integer id) {
+        ensureStudentExists(id);
+        this.removeById(id);
+    }
+
+    public void updateStudent(Student student) {
+        ensureStudentExists(student.getId());
+        this.updateById(student);
     }
 
     public void addStudent(Student student) {

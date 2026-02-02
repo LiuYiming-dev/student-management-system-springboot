@@ -68,7 +68,7 @@ public class StudentController {
     @DeleteMapping("/delete/{id}") // 稍微规范一点，用 @DeleteMapping
     @Operation(summary = "删除学生") // 🌟 描述这个接口
     public Result<?> delete(@PathVariable Integer id) {
-        studentService.removeById(id);
+        studentService.deleteStudent(id);
         return Result.success(null);
     }
 
