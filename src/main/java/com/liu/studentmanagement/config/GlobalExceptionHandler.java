@@ -1,7 +1,8 @@
 package com.liu.studentmanagement.config;
-
+import java.util.stream.Collectors;
 import com.liu.studentmanagement.common.Result;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,10 +29,11 @@ public class GlobalExceptionHandler {
     public Result<?> handleValidationException(MethodArgumentNotValidException e) {
         // 从异常中提取出具体的错误信息
         BindingResult bindingResult = e.getBindingResult();
-        String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
-
+        String message = bindingResult.getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(";"));
         // 返回 400 状态码，表示请求参数有问题
-        return Result.error("400", defaultMessage);
+        return Result.error("400", message);
     }
 
 
