@@ -8,6 +8,7 @@ import com.liu.studentmanagement.Service.StudentServiceImpl;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
+import com.liu.studentmanagement.entity.vo.StudentVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,27 +41,14 @@ public class StudentController {
      * 分页查询
      */
     @GetMapping("/page")
-    @Operation(summary = "分页查询学生列表") // 🌟 描述这个接口
-    public Result<PageResult<Student>> page(
+    @Operation(summary = "分页查询学生列表(含班级信息)")
+    public Result<Page<StudentVO>> page(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String name) {
 
-        // 1. 准备 MP 的分页参数
-        Page<Student> pageParam = new Page<>(pageNum, pageSize);
-
-        // 2. 构建查询条件
-        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(name != null, Student::getName, name);
-
-
-        // 3. 执行查询
-        IPage<Student> mpPage = studentService.page(pageParam, wrapper);
-        PageResult<Student> finalResult = new PageResult<>(
-                mpPage.getRecords(),
-                mpPage.getTotal()
-        );
-        return Result.success(finalResult);
+        Page<StudentVO> voPage = studentService.getStudentVOPage(pageNum, pageSize, name);
+        return Result.success(voPage);
     }
 
     /**

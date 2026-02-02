@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.config;
 import java.util.stream.Collectors;
 import com.liu.studentmanagement.common.Result;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -43,7 +44,8 @@ public class GlobalExceptionHandler {
         return Result.error("400", "数据重复：该学号或ID已存在，请检查！");
     }
 
-
-
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public Result<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return Result.error("400", "班级不存在");
+    }
 }

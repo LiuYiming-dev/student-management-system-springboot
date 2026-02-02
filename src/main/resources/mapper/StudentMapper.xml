@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liu.studentmanagement.mapper.StudentMapper">
+
+    <select id="selectStudentPage" resultType="com.liu.studentmanagement.entity.vo.StudentVO">
+        SELECT
+        s.*,
+        c.class_name as className,
+        c.teacher_name as teacherName
+        FROM student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        <where>
+            <!-- 逻辑删除过滤：只查没删除的 -->
+            s.is_deleted = 0
+            <if test="name != null and name != ''">
+                AND s.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY s.id DESC
+    </select>
+
+</mapper>

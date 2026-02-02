@@ -46,5 +46,8 @@ public class Student {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-
+    @Schema(description = "有没有被删除")
+    @NotNull(message = "删除")
+    @TableLogic
+    private Integer isDeleted;
 }

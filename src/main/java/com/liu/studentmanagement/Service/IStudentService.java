@@ -1,10 +1,13 @@
 package com.liu.studentmanagement.Service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.liu.studentmanagement.entity.Student;
+import com.liu.studentmanagement.entity.vo.StudentVO;
 
 public interface IStudentService extends IService<Student> {
     void addStudent(Student student);
     void updateStudent(Student student);
     void deleteStudent(Integer id);
+    Page<StudentVO> getStudentVOPage(Integer pageNum, Integer pageSize, String name);
 }
