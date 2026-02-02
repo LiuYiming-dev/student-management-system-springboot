@@ -21,17 +21,4 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         }
     }
 
-    public void addStudent(Student student) {
-        // 1. 检查学号是否存在
-        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Student::getStudentNo, student.getStudentNo());
-
-        long count = this.count(wrapper);
-        if (count > 0) {
-            throw new RuntimeException("学号 " + student.getStudentNo() + " 已经被占用了！");
-        }
-
-        // 2. 存入数据库
-        this.save(student);
-    }
 }

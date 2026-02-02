@@ -29,7 +29,7 @@ public class StudentController {
     @PostMapping("/add")
     @Operation(summary = "新增学生") // 🌟 描述这个接口
     public Result<?> add(@RequestBody @Validated Student student) {
-        studentService.addStudent(student);
+        studentService.save(student);
         return Result.success(null);
     }
 
