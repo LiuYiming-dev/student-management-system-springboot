@@ -9,24 +9,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
 
-
-
-    private Student ensureStudentExists(Integer id) {
-        Student student = this.getById(id);
-        if (student == null) {
-            throw new RuntimeException("操作失败：学号为 " + id + " 的学生不存在！");
-        }
-        return student;
-    }
-
     public void deleteStudent(Integer id) {
-        ensureStudentExists(id);
-        this.removeById(id);
+        if (!this.removeById(id)) {
+            throw new RuntimeException("删除失败，ID不存在");
+        }
     }
 
     public void updateStudent(Student student) {
-        ensureStudentExists(student.getId());
-        this.updateById(student);
+        if (!this.updateById(student)) {
+            throw new RuntimeException("修改失败，ID不存在");
+        }
     }
 
     public void addStudent(Student student) {
