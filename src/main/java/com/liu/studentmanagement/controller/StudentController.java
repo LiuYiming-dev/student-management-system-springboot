@@ -8,6 +8,7 @@ import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,7 +27,7 @@ public class StudentController {
      * 添加学生行
      */
     @PostMapping("/add")
-    public Result<?> add(@RequestBody Student student) {
+    public Result<?> add(@RequestBody @Validated Student student) {
         studentService.save(student);
         return Result.success(null);
     }
@@ -69,7 +70,7 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public Result<?> update(@RequestBody Student student) {
+    public Result<?> update(@RequestBody @Validated Student student) {
         studentService.updateById(student);
         return Result.success(null);
     }

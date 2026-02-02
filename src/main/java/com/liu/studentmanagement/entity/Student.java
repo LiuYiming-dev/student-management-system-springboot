@@ -1,10 +1,13 @@
 package com.liu.studentmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data; // Lombok注解
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 @Data // 自动生成Get/Set/ToString
@@ -12,9 +15,19 @@ import java.time.LocalDateTime;
 public class Student {
     @TableId(type = IdType.AUTO)
     private Integer id;
+
+
     private String studentNo; // 注意驼峰命名对应数据库下划线
+
+    @NotBlank(message = "姓名不能为空")// 字符串不能为 null 且 trim() 后长度 > 0
     private String name;
+
+    @Min(value = 0, message = "年龄不能小于0岁")
+    @Max(value = 120, message = "年龄不能大于120岁")
     private Integer age;
+
+    @NotBlank(message = "邮箱不能为空")
+    @Email(message = "邮箱格式不正确")
     private String email;
 
     @TableField(fill = FieldFill.INSERT)
