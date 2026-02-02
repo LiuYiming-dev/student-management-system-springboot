@@ -3,6 +3,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.Mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.liu.studentmanagement.Service.IStudentService;
 import com.liu.studentmanagement.Service.StudentServiceImpl;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
 
     @Autowired
-    private StudentServiceImpl studentService;
+    private IStudentService studentService;
 
     /**
      * 添加学生行
@@ -29,7 +30,7 @@ public class StudentController {
     @PostMapping("/add")
     @Operation(summary = "新增学生") // 🌟 描述这个接口
     public Result<?> add(@RequestBody @Validated Student student) {
-        studentService.save(student);
+        studentService.addStudent(student);
         return Result.success(null);
     }
 

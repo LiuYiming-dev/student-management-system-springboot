@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liu.studentmanagement.Service.ClazzServiceImpl;
+import com.liu.studentmanagement.Service.IClazzService;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Clazz;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "班级管理模块", description = "负责班级的增删改查")
 public class ClazzController {
     @Autowired
-    private ClazzServiceImpl clazzService;
+    private IClazzService clazzService;
 
     @PostMapping("/add")
     @Operation(summary = "新增班级") // 🌟 描述这个接口
