@@ -55,4 +55,12 @@ public class Student {
     @Schema(description = "性别")
     @NotNull(message = "性别不能为空")
     private GenderEnum gender;
+
+    @Schema(description = "创建管理员")
+    @TableField(fill = FieldFill.INSERT)
+    private Integer createByUserId;
+
+    @Schema(description = "更新管理员")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Integer updateByUserId;
 }

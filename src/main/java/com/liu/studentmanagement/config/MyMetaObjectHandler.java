@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.liu.studentmanagement.common.BaseContext;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,14 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         // 强制填充，不管对象里有没有值
         this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
         this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("createByUserId", BaseContext.getCurrentId(), metaObject);
+        this.setFieldValByName("updateByUserId", BaseContext.getCurrentId(), metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         // 修改时强制更新时间
         this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateByUserId", BaseContext.getCurrentId(), metaObject);
     }
 }

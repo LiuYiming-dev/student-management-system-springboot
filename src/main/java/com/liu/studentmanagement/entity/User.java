@@ -35,4 +35,6 @@ public class User {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+
+
 }

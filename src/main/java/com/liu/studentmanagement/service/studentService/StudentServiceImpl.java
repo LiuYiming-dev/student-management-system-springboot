@@ -2,6 +2,7 @@ package com.liu.studentmanagement.service.studentService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.liu.studentmanagement.common.BaseContext;
 import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
@@ -44,6 +45,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public void addStudent(StudentDTO studentDTO) {
         // 使用 log.info 记录关键业务信息
         // 使用 {} 占位符，这是 SLF4J 的标准写法，效率高且优雅
+        Integer currentOperatorId = BaseContext.getCurrentId();
+        log.info("当前操作人ID是: {}", currentOperatorId);
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO, student);
         if (studentDTO.getGender() == 1) student.setGender(GenderEnum.MALE);

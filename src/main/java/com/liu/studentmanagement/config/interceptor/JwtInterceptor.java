@@ -1,5 +1,6 @@
 package com.liu.studentmanagement.config.interceptor;
 
+import com.liu.studentmanagement.common.BaseContext;
 import com.liu.studentmanagement.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             // 3. 尝试解析 Token
             Claims claims = JwtUtils.parseToken(token);
-
+            Integer userId = (Integer) claims.get("userId");
+            BaseContext.setCurrentId(userId);
             // 🌟 进阶技巧：把解析出来的用户ID存入 request，方便后续 Controller 使用
             request.setAttribute("currentUserId", claims.get("userId"));
 
@@ -36,5 +38,11 @@ public class JwtInterceptor implements HandlerInterceptor {
             response.getWriter().write("Invalid or expired token!");
             return false;
         }
+    }
+
+    // 🌟 别忘了写这个：请求结束后清理口袋
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        BaseContext.remove();
     }
 }
