@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.liu.studentmanagement.common.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data; // Lombok注解
@@ -50,4 +51,8 @@ public class Student {
     @NotNull(message = "删除")
     @TableLogic
     private Integer isDeleted;
+
+    @Schema(description = "性别")
+    @NotNull(message = "性别不能为空")
+    private GenderEnum gender;
 }

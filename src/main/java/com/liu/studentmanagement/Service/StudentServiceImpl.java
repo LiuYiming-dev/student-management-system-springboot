@@ -2,11 +2,13 @@ package com.liu.studentmanagement.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.liu.studentmanagement.entity.Clazz;
+import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Student;
+import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +32,31 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public void updateStudent(Student student) {
+    public void updateStudent(StudentDTO studentDTO) {
+        Student student = new Student();
+        BeanUtils.copyProperties(studentDTO, student);
         if (!this.updateById(student)) {
             throw new RuntimeException("修改失败，ID不存在");
         }
     }
     @Override
-    public void addStudent(Student student) {
+    public void addStudent(StudentDTO studentDTO) {
         // 使用 log.info 记录关键业务信息
         // 使用 {} 占位符，这是 SLF4J 的标准写法，效率高且优雅
+        Student student = new Student();
+        BeanUtils.copyProperties(studentDTO, student);
+        if (studentDTO.getGender() == 1) student.setGender(GenderEnum.MALE);
+        else student.setGender(GenderEnum.FEMALE);
+
         log.info("准备添加学生，学号：{}, 姓名：{}", student.getStudentNo(), student.getName());
+        log.info(student.toString());
+        if (student.getGender() == GenderEnum.MALE) log.info("正在录入一名男同学");
+        else log.info("正在录入一名女同学");
 
         this.save(student);
         log.info("学生添加成功，数据库分配ID：{}", student.getId());
     }
+
+
 
 }

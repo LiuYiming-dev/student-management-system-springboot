@@ -1,0 +1,41 @@
+package com.liu.studentmanagement.entity.dto;
+
+import com.liu.studentmanagement.common.enums.GenderEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+@Schema(description = "学生输入表单对象")
+public class StudentDTO {
+
+    // 新增时 ID 为空，修改时 ID 必填
+    @Schema(description = "主键ID(修改时必填)")
+    private Integer id;
+
+    @NotBlank(message = "学号不能为空")
+    @Schema(description = "学号")
+    private String studentNo;
+
+    @NotBlank(message = "姓名不能为空")
+    @Schema(description = "姓名")
+    private String name;
+
+    @Min(0) @Max(120)
+    @Schema(description = "年龄")
+    private Integer age;
+
+    @Schema(description = "邮箱")
+    private String email;
+
+    @NotNull(message = "必须选择班级")
+    @Schema(description = "班级ID")
+    private Integer clazzId;
+
+    @Schema(description = "性别：1-男，0-女")
+    private Integer gender;
+}

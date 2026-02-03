@@ -8,6 +8,7 @@ import com.liu.studentmanagement.Service.StudentServiceImpl;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
+import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,8 +31,8 @@ public class StudentController {
      */
     @PostMapping("/add")
     @Operation(summary = "新增学生") // 🌟 描述这个接口
-    public Result<?> add(@RequestBody @Validated Student student) {
-        studentService.addStudent(student);
+    public Result<?> add(@RequestBody @Validated StudentDTO studentDTO) {
+        studentService.addStudent(studentDTO);
         return Result.success(null);
     }
 
@@ -63,8 +64,8 @@ public class StudentController {
 
     @PutMapping("/update")
     @Operation(summary = "更新学生信息") // 🌟 描述这个接口
-    public Result<?> update(@RequestBody @Validated Student student) {
-        studentService.updateStudent(student);
+    public Result<?> update(@RequestBody @Validated StudentDTO studentDTO) {
+        studentService.updateStudent(studentDTO);
         return Result.success(null);
     }
 
