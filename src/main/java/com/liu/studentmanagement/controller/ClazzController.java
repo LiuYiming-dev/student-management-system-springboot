@@ -3,7 +3,7 @@ package com.liu.studentmanagement.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.liu.studentmanagement.service.IClazzService;
+import com.liu.studentmanagement.service.clazzService.IClazzService;
 import com.liu.studentmanagement.common.PageResult;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Clazz;

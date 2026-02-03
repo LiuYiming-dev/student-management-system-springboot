@@ -1,8 +1,7 @@
 package com.liu.studentmanagement.common;
 
-import com.liu.studentmanagement.entity.User;
 import com.liu.studentmanagement.entity.dto.UserDTO;
-import com.liu.studentmanagement.service.IUserService;
+import com.liu.studentmanagement.service.userService.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

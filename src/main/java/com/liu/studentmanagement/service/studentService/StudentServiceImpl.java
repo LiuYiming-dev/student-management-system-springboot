@@ -1,4 +1,4 @@
-package com.liu.studentmanagement.service;
+package com.liu.studentmanagement.service.studentService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -7,6 +7,7 @@ import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
+import com.liu.studentmanagement.service.clazzService.IClazzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

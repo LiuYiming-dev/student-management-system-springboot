@@ -1,6 +1,6 @@
 package com.liu.studentmanagement.controller;
 
-import com.liu.studentmanagement.service.UserServiceImpl;
+import com.liu.studentmanagement.service.userService.UserServiceImpl;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,10 +18,16 @@ public class UserController {
     UserServiceImpl userService;
 
     @PostMapping("/register")
-    @Operation(summary = "管理员登录")
+    @Operation(summary = "管理员注册")
     public Result<?> register(@RequestBody @Validated UserDTO userDTO) {
         userService.userRegister(userDTO);
         return Result.success(null);
     }
 
+    @PostMapping("/login")
+    @Operation(summary = "管理员登录")
+    public Result<?> login(@RequestBody @Validated UserDTO userDTO) {
+        String token = userService.login(userDTO);
+        return Result.success(token);
+    }
 }

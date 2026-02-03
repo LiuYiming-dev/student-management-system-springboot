@@ -1,6 +1,6 @@
 package com.liu.studentmanagement.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.liu.studentmanagement.service.IStudentService;
+import com.liu.studentmanagement.service.studentService.IStudentService;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;

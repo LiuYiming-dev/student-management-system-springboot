@@ -1,10 +1,12 @@
-package com.liu.studentmanagement.service;
+package com.liu.studentmanagement.service.userService;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.entity.User;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import com.liu.studentmanagement.mapper.UserMapper;
+import com.liu.studentmanagement.utils.JwtUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +30,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         this.save(user);
+    }
+
+    @Override
+    public String login(UserDTO userDTO) {
+        // 1. 根据用户名查数据库
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, userDTO.getUsername());
+        User user = this.getOne(wrapper);
+
+        // 2. 判断用户是否存在
+        if (user == null) {
+            throw new RuntimeException("用户名或密码错误"); // 不要提示用户不存在，防暴力破解
+        }
+
+        // 3. 校验密码
+        // 注意：第一个参数是前端传的明文，第二个是数据库里的密文
+        if (!passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
+            throw new RuntimeException("用户名或密码错误");
+        }
+
+        // 4. 生成并返回 Token
+        return JwtUtils.createToken(user.getId(), user.getUsername());
     }
 
 

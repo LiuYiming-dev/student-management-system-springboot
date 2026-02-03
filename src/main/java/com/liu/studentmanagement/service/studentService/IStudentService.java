@@ -1,4 +1,4 @@
-package com.liu.studentmanagement.service;
+package com.liu.studentmanagement.service.studentService;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
