@@ -1,11 +1,6 @@
 package com.liu.studentmanagement.controller;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.Mapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.liu.studentmanagement.Service.IStudentService;
-import com.liu.studentmanagement.Service.StudentServiceImpl;
-import com.liu.studentmanagement.common.PageResult;
+import com.liu.studentmanagement.service.IStudentService;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;

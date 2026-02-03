@@ -1,4 +1,4 @@
-package com.liu.studentmanagement.Service;
+package com.liu.studentmanagement.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.entity.Clazz;
