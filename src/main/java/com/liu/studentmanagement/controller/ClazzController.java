@@ -62,7 +62,7 @@ public class ClazzController {
     @DeleteMapping("/delete/{id}") // 稍微规范一点，用 @DeleteMapping
     @Operation(summary = "删除班级") // 🌟 描述这个接口
     public Result<?> delete(@PathVariable Integer id) {
-        clazzService.removeById(id);
+        clazzService.deleteClazzStudents(id);
         return Result.success(null);
     }
 
@@ -72,6 +72,9 @@ public class ClazzController {
         clazzService.updateById(clazz);
         return Result.success(null);
     }
+
+
+
 
 
 

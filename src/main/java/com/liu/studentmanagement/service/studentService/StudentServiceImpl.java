@@ -8,17 +8,13 @@ import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
-import com.liu.studentmanagement.service.clazzService.IClazzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
-    @Autowired
-    IClazzService clazzService;
 
     @Override
     public void deleteStudent(Integer id) {
