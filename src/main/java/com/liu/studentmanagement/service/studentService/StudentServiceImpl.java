@@ -33,6 +33,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public void updateStudent(StudentDTO studentDTO) {
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO, student);
+        if (studentDTO.getGender() != null) {
+            student.setGender(GenderEnum.getByCode(studentDTO.getGender()));
+        }
         if (!this.updateById(student)) {
             throw new RuntimeException("修改失败，ID不存在");
         }
@@ -45,8 +48,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         log.info("当前操作人ID是: {}", currentOperatorId);
         Student student = new Student();
         BeanUtils.copyProperties(studentDTO, student);
-        if (studentDTO.getGender() == 1) student.setGender(GenderEnum.MALE);
-        else student.setGender(GenderEnum.FEMALE);
+        if (studentDTO.getGender() != null) {
+            student.setGender(GenderEnum.getByCode(studentDTO.getGender()));
+        }
 
         log.info("准备添加学生，学号：{}, 姓名：{}", student.getStudentNo(), student.getName());
         log.info(student.toString());

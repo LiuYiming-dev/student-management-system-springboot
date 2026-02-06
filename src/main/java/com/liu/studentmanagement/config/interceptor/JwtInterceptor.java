@@ -13,6 +13,10 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if ("OPTIONS".equals(request.getMethod())) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+        }
         // 1. 从请求头里获取 Token
         // 前端通常放在 "Authorization" 字段中
         String token = request.getHeader("token");

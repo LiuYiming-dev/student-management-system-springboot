@@ -20,4 +20,14 @@ public enum GenderEnum {
         this.desc = desc;
     }
 
+    public static GenderEnum getByCode(Integer code) {
+        for (GenderEnum gender : GenderEnum.values()) {
+            if (gender.code == code) {
+                return gender;
+            }
+        }
+        // 如果没匹配到，可以返回 null 或者给个默认值
+        return null;
+    }
+
 }
