@@ -34,10 +34,10 @@ public class Student {
     @Max(value = 120, message = "年龄不能大于120岁")
     private Integer age;
 
-    @Schema(description = "邮箱")
-    @NotBlank(message = "邮箱不能为空")
-    @Email(message = "邮箱格式不正确")
-    private String email;
+    @Schema(description = "电话号码")
+    @NotBlank(message = "电话号码不能为空")
+    private String phoneNumber;
+
 
     @Schema(description = "创建时间")
     @TableField(fill = FieldFill.INSERT)
@@ -50,7 +50,7 @@ public class Student {
     @Schema(description = "有没有被删除")
     @NotNull(message = "删除")
     @TableLogic
-    private Integer isDeleted;
+    private Integer deleted;
 
     @Schema(description = "性别")
     @NotNull(message = "性别不能为空")

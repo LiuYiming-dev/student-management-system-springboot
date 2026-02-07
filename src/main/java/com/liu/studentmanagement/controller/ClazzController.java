@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/clazz")
 @CrossOrigin
@@ -23,37 +25,9 @@ public class ClazzController {
 
     @PostMapping("/add")
     @Operation(summary = "新增班级") // 🌟 描述这个接口
-    public Result<?> add(@RequestBody @Validated Clazz clazz){
+    public Result<?> add(@RequestBody @Validated Clazz clazz) {
         clazzService.save(clazz);
         return Result.success(null);
-    }
-
-
-    /**
-     * 分页查询
-     */
-    @GetMapping("/page")
-    @Operation(summary = "分页查询班级列表") // 🌟 描述这个接口
-    public Result<PageResult<Clazz>> page(
-            @RequestParam(defaultValue = "1") Integer pageNum,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String className) {
-
-        // 1. 准备 MP 的分页参数
-        Page<Clazz> pageParam = new Page<>(pageNum, pageSize);
-
-        // 2. 构建查询条件
-        LambdaQueryWrapper<Clazz> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(className != null, Clazz::getClassName, className);
-
-
-        // 3. 执行查询
-        IPage<Clazz> mpPage = clazzService.page(pageParam, wrapper);
-        PageResult<Clazz> finalResult = new PageResult<>(
-                mpPage.getRecords(),
-                mpPage.getTotal()
-        );
-        return Result.success(finalResult);
     }
 
     /**
@@ -73,10 +47,18 @@ public class ClazzController {
         return Result.success(null);
     }
 
+    @GetMapping("/page")
+    @Operation(summary = "分页查询班级列表")
+    public Result<Page<Clazz>> page(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        return Result.success(clazzService.getClazzPage(pageNum, pageSize));
 
+    }
 
-
-
-
-
+    @GetMapping("/all")
+    @Operation(summary = "查询所有班级(用于下拉框)")
+    public Result<List<Clazz>> all() {
+        return Result.success(clazzService.listAll());
+    }
 }

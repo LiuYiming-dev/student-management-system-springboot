@@ -11,7 +11,7 @@
         LEFT JOIN clazz c ON s.clazz_id = c.id
         <where>
             <!-- 逻辑删除过滤：只查没删除的 -->
-            s.is_deleted = 0
+            s.deleted = 0
             <if test="name != null and name != ''">
                 AND s.name LIKE CONCAT('%', #{name}, '%')
             </if>

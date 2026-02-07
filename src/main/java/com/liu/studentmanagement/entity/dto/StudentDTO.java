@@ -28,10 +28,6 @@ public class StudentDTO {
     @Schema(description = "年龄")
     private Integer age;
 
-    @Email(message = "邮箱格式不正确")
-    @Schema(description = "邮箱")
-    private String email;
-
     @NotNull(message = "必须选择班级")
     @Schema(description = "班级ID")
     private Integer clazzId;
@@ -40,5 +36,6 @@ public class StudentDTO {
     @Range(min = 0, max = 1, message = "性别：1-男，0-女, 请重新输入")
     @Schema(description = "性别：1-男，0-女")
     private Integer gender;
+
 
 }

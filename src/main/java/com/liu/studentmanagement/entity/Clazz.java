@@ -24,6 +24,10 @@ public class Clazz {
     @Schema(description = "老师")
     private String teacherName;
 
+    @NotBlank(message = "电话号码不能为空")
+    @Schema(description = "电话号码")
+    private String PhoneNumber;
+
     @Schema(description = "创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
