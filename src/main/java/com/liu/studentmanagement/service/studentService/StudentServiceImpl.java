@@ -1,11 +1,13 @@
 package com.liu.studentmanagement.service.studentService;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.common.BaseContext;
 import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
+import com.liu.studentmanagement.entity.vo.DashboardVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public Page<StudentVO> getStudentVOPage(Integer pageNum, Integer pageSize, String name) {
         Page<StudentVO> page = new Page<>(pageNum, pageSize);
         return baseMapper.selectStudentPage(page, name);
+    }
+
+    @Override
+    public DashboardVO getDashboardStats() {
+        DashboardVO dashboardVO = new DashboardVO();
+        dashboardVO.setTotalStudents(this.count(new LambdaQueryWrapper<Student>().eq(Student::getDeleted, 0)));
+        dashboardVO.setGenderData(baseMapper.countByGender());
+        dashboardVO.setClassData(baseMapper.countByClass());
+        return dashboardVO;
     }
 
     @Override

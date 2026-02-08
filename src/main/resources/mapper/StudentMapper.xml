@@ -19,4 +19,27 @@
         ORDER BY s.id DESC
     </select>
 
+    <!-- StudentMapper.xml -->
+
+    <!-- 1. 性别统计：1为男，0为女 -->
+    <select id="countByGender" resultType="map">
+        SELECT
+            (CASE gender WHEN 1 THEN '男' WHEN 0 THEN '女' ELSE '未知' END) as name,
+            COUNT(*) as value
+        FROM student
+        WHERE deleted = 0
+        GROUP BY gender
+    </select>
+
+    <!-- 2. 班级人数统计：关联 clazz 表拿班级名 -->
+    <select id="countByClass" resultType="map">
+        SELECT
+            c.class_name as name,
+            COUNT(s.id) as value
+        FROM clazz c
+            LEFT JOIN student s ON c.id = s.clazz_id AND s.deleted = 0
+        WHERE c.deleted = 0
+        GROUP BY c.id, c.class_name
+    </select>
+
 </mapper>
