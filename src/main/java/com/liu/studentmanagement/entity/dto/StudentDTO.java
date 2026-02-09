@@ -37,5 +37,11 @@ public class StudentDTO {
     @Schema(description = "性别：1-男，0-女")
     private Integer gender;
 
+    @Schema(description = "电话号码")
+    @NotBlank(message = "电话号码不能为空")
+    private String phoneNumber;
+
+
+
 
 }

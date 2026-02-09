@@ -1,10 +1,14 @@
 package com.liu.studentmanagement.controller;
 
+import com.liu.studentmanagement.entity.User;
+import com.liu.studentmanagement.entity.vo.LoginVO;
+import com.liu.studentmanagement.entity.vo.UserVO;
 import com.liu.studentmanagement.service.userService.UserServiceImpl;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +30,15 @@ public class UserController {
 
     @PostMapping("/login")
     @Operation(summary = "管理员登录")
-    public Result<?> login(@RequestBody @Validated UserDTO userDTO) {
+    public Result<LoginVO> login(@RequestBody @Validated UserDTO userDTO) {
         String token = userService.login(userDTO);
-        return Result.success(token);
+        LoginVO loginVO = new LoginVO();
+        loginVO.setToken(token);
+
+        User user = userService.getByName(userDTO.getUsername());
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        loginVO.setUser(userVO);
+        return Result.success(loginVO);
     }
 }

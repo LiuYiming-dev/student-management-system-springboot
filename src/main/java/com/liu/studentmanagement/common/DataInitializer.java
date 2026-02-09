@@ -25,7 +25,7 @@ public class DataInitializer implements CommandLineRunner {
             UserDTO admin = new UserDTO();
             admin.setUsername("admin");
             admin.setPassword("123456"); // 🌟 注意：如果你的 register 方法里有加密逻辑，直接调 register
-            admin.setNickname("系统管理员");
+            admin.setNickName("系统管理员");
 
             userService.userRegister(admin); // 调你写好的带加密的注册逻辑
             log.info("默认管理员初始化成功！账号：admin，密码：123456");

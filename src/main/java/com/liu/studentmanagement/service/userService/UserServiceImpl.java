@@ -54,5 +54,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return JwtUtils.createToken(user.getId(), user.getUsername());
     }
 
+    @Override
+    public User getByName(String name) {
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, name);
+        return this.getOne(wrapper);
+    }
+
 
 }
