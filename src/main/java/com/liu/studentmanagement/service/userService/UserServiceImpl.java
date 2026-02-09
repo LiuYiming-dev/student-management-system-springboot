@@ -3,15 +3,20 @@ package com.liu.studentmanagement.service.userService;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.liu.studentmanagement.common.BaseContext;
 import com.liu.studentmanagement.entity.User;
+import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import com.liu.studentmanagement.mapper.UserMapper;
 import com.liu.studentmanagement.utils.JwtUtils;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
@@ -59,6 +64,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, name);
         return this.getOne(wrapper);
+    }
+
+    @Override
+    public void updatePassword(PasswordUpdateDTO passwordUpdateDTO) {
+        Integer currentUserId = BaseContext.getCurrentId();
+        User user = this.getById(currentUserId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        if (!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("原密码不正确");
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+        this.updateById(user);
+        log.info("用户 {} 修改密码成功", user.getUsername());
     }
 
 

@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.controller;
 
 import com.liu.studentmanagement.entity.User;
+import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
 import com.liu.studentmanagement.entity.vo.LoginVO;
 import com.liu.studentmanagement.entity.vo.UserVO;
 import com.liu.studentmanagement.service.userService.UserServiceImpl;
@@ -40,5 +41,12 @@ public class UserController {
         BeanUtils.copyProperties(user, userVO);
         loginVO.setUser(userVO);
         return Result.success(loginVO);
+    }
+
+    @PutMapping("/password")
+    @Operation(summary = "修改当前登录用户密码")
+    public Result<?> updatePassword(@RequestBody @Validated PasswordUpdateDTO passwordUpdateDTO) {
+        userService.updatePassword(passwordUpdateDTO);
+        return Result.success(null);
     }
 }
