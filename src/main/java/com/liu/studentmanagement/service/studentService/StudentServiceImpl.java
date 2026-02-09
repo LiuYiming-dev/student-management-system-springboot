@@ -10,13 +10,18 @@ import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.DashboardVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
+import com.liu.studentmanagement.service.clazzService.ClazzServiceImpl;
+import com.liu.studentmanagement.service.clazzService.IClazzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
+    @Autowired
+    IClazzService classService;
 
     @Override
     public void deleteStudent(Integer id) {
@@ -35,6 +40,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public DashboardVO getDashboardStats() {
         DashboardVO dashboardVO = new DashboardVO();
         dashboardVO.setTotalStudents(this.count(new LambdaQueryWrapper<Student>().eq(Student::getDeleted, 0)));
+        dashboardVO.setTotalClasses(classService.count());
+        dashboardVO.setAvgAge(baseMapper.averageAge());
         dashboardVO.setGenderData(baseMapper.countByGender());
         dashboardVO.setClassData(baseMapper.countByClass());
         return dashboardVO;
@@ -51,6 +58,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             throw new RuntimeException("修改失败，ID不存在");
         }
     }
+
     @Override
     public void addStudent(StudentDTO studentDTO) {
         // 使用 log.info 记录关键业务信息
@@ -71,7 +79,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         this.save(student);
         log.info("学生添加成功，数据库分配ID：{}", student.getId());
     }
-
 
 
 }

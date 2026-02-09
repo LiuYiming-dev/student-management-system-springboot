@@ -14,4 +14,5 @@ public interface StudentMapper extends BaseMapper<Student> {
     Page<StudentVO> selectStudentPage(Page<StudentVO> page, @Param("name") String name);
     List<Map<String, Object>> countByGender();
     List<Map<String, Object>> countByClass();
+    Double averageAge();
 }

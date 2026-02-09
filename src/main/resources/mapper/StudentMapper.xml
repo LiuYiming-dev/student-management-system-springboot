@@ -42,4 +42,12 @@
         GROUP BY c.id, c.class_name
     </select>
 
+    <!-- 2. 班级人数统计：关联 clazz 表拿班级名 -->
+    <select id="averageAge" resultType="double">
+        SELECT
+            ROUND(AVG(age), 1)
+        FROM student
+        WHERE deleted = 0
+    </select>
+
 </mapper>
