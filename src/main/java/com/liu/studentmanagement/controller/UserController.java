@@ -10,7 +10,6 @@ import com.liu.studentmanagement.entity.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin // 🌟重要！允许跨域，为了以后Vue能访问
 @Tag(name = "管理员管理模块", description = "负责管理员的登录") // 🌟 描述这个 Controller
 public class UserController {
-    @Autowired
-    UserServiceImpl userService;
+    final UserServiceImpl userService;
+
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     @Operation(summary = "管理员注册")

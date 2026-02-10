@@ -1,7 +1,6 @@
 package com.liu.studentmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.common.enums.RoleEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

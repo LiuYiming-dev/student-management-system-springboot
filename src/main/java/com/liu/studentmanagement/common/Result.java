@@ -16,9 +16,9 @@ public class Result<T> {
         return r;
     }
 
-    // 失败的方法
-    public static Result error(String code, String msg) {
-        Result r = new Result();
+
+    public static <T> Result<T> error(String code, String msg) {
+        Result<T> r = new Result<>();
         r.setCode(code);
         r.setMsg(msg);
         return r;

@@ -1,8 +1,6 @@
 package com.liu.studentmanagement.entity.dto;
 
-import com.liu.studentmanagement.common.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;

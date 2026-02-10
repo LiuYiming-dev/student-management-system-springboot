@@ -1,12 +1,9 @@
 package com.liu.studentmanagement.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @Schema(description = "管理者输入表单对象")

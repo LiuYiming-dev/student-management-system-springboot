@@ -4,7 +4,6 @@ import com.liu.studentmanagement.common.enums.RoleEnum;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import com.liu.studentmanagement.service.userService.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +12,14 @@ import org.springframework.stereotype.Component;
 // CommandLineRunner 的作用：项目启动完成后，会自动执行这里的 run 方法
 public class DataInitializer implements CommandLineRunner {
 
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
+
+    public DataInitializer(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // 1. 检查数据库里是否已经有用户
         long count = userService.count();
 

@@ -6,7 +6,6 @@ import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Clazz;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +16,11 @@ import java.util.List;
 @CrossOrigin
 @Tag(name = "班级管理模块", description = "负责班级的增删改查")
 public class ClazzController {
-    @Autowired
-    private IClazzService clazzService;
+    private final IClazzService clazzService;
+
+    public ClazzController(IClazzService clazzService) {
+        this.clazzService = clazzService;
+    }
 
     @PostMapping("/add")
     @Operation(summary = "新增班级") // 🌟 描述这个接口
@@ -27,15 +29,6 @@ public class ClazzController {
         return Result.success(null);
     }
 
-//    /**
-//     * 删除
-//     */
-//    @DeleteMapping("/delete/{id}") // 稍微规范一点，用 @DeleteMapping
-//    @Operation(summary = "删除班级") // 🌟 描述这个接口
-//    public Result<?> delete(@PathVariable Integer id) {
-//        clazzService.deleteClazzStudents(id);
-//        return Result.success(null);
-//    }
 
     @PutMapping("/update")
     @Operation(summary = "更新班级信息") // 🌟 描述这个接口

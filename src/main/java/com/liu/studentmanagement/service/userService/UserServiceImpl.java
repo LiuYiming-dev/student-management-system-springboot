@@ -10,10 +10,8 @@ import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import com.liu.studentmanagement.mapper.UserMapper;
 import com.liu.studentmanagement.utils.JwtUtils;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void userRegister(UserDTO userDTO) {
-//        if (this.getById(userDTO.getId()) == null) {
-//            throw new RuntimeException("不存在此管理员");
-//        }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
         RoleEnum roleEnum = RoleEnum.getByCode(userDTO.getRole());

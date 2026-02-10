@@ -6,7 +6,7 @@ package com.liu.studentmanagement.common;
 public class BaseContext {
 
     // 创建一个 ThreadLocal 容器
-    private static ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
 
     // 存入当前用户ID
     public static void setCurrentId(Integer id) {

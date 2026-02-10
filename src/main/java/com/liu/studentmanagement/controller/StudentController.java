@@ -7,7 +7,6 @@ import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "学生管理模块", description = "负责学生的增删改查") // 🌟 描述这个 Controller
 public class StudentController {
 
-    @Autowired
-    private IStudentService studentService;
+    private final IStudentService studentService;
+
+    public StudentController(IStudentService studentService) {
+        this.studentService = studentService;
+    }
 
     /**
      * 添加学生行
