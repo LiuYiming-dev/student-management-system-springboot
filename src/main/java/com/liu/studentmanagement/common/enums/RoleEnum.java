@@ -5,28 +5,27 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum GenderEnum {
-    MALE(1, "男"),
-    FEMALE(0, "女");
+public enum RoleEnum {
+    ADMIN("ADMIN", "超级管理员"),
+    STUDENT("STUDENT", "普通学生");
 
     @EnumValue
-    private final int code;
+    private final String code;
 
     @JsonValue
     private final String desc;
 
-    GenderEnum(int code, String desc) {
+    RoleEnum(String code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
-    public static GenderEnum getByCode(Integer code) {
-        for (GenderEnum gender : GenderEnum.values()) {
-            if (gender.code == code) {
-                return gender;
+    public static RoleEnum getByCode(String code) {
+        for (RoleEnum role : RoleEnum.values()) {
+            if (role.code.equals(code)) {
+                return role;
             }
         }
         return null;
     }
-
 }

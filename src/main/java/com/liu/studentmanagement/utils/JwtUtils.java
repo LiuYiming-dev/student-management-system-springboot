@@ -1,12 +1,15 @@
 package com.liu.studentmanagement.utils;
 
+import com.liu.studentmanagement.common.enums.RoleEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
+
+
+
 
 public class JwtUtils {
 
@@ -18,7 +21,7 @@ public class JwtUtils {
     /**
      * 生成 Token
      */
-    public static String createToken(Integer userId, String username) {
+    public static String createToken(Integer userId, String username, RoleEnum role) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRE);
 
@@ -26,6 +29,7 @@ public class JwtUtils {
                 .setSubject("USER_INFO")
                 .claim("userId", userId)      // 存入用户ID
                 .claim("username", username)  // 存入用户名
+                .claim("role", role.getCode())
                 .setIssuedAt(now)             // 签发时间
                 .setExpiration(expiryDate)    // 过期时间
                 .signWith(KEY)                // 签名

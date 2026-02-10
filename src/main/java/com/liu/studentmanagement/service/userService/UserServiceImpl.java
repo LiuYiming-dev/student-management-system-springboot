@@ -4,6 +4,7 @@ package com.liu.studentmanagement.service.userService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.common.BaseContext;
+import com.liu.studentmanagement.common.enums.RoleEnum;
 import com.liu.studentmanagement.entity.User;
 import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
 import com.liu.studentmanagement.entity.dto.UserDTO;
@@ -30,7 +31,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 //        }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-
+        RoleEnum roleEnum = RoleEnum.getByCode(userDTO.getRole());
+        user.setRole(roleEnum);
         // 🌟 核心：加密后再存入数据库
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -56,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         // 4. 生成并返回 Token
-        return JwtUtils.createToken(user.getId(), user.getUsername());
+        return JwtUtils.createToken(user.getId(), user.getUsername(), user.getRole());
     }
 
     @Override

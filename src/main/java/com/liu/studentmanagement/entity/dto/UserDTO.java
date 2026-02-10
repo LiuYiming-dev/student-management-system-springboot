@@ -21,9 +21,10 @@ public class UserDTO {
     private String password;
 
     @Schema(description = "昵称")
-    private String nickName;
+    private String nickname;
 
-
+    @Schema(description = "role")
+    private String role;
 }
 
 

@@ -2,6 +2,7 @@ package com.liu.studentmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.liu.studentmanagement.common.enums.GenderEnum;
+import com.liu.studentmanagement.common.enums.RoleEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class User {
     private String username;
 
     @Schema(description = "密码")
-    @NotNull(message = "密码不能为空")
+    @NotBlank(message = "姓名不能为空")
     private String password;
 
     @Schema(description = "别名")
@@ -35,6 +36,9 @@ public class User {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+    @Schema(description = "权限")
+    @NotNull(message = "权限不能为空")
+    private RoleEnum role;
 
 
 }

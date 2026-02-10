@@ -1,5 +1,6 @@
 package com.liu.studentmanagement.common;
 
+import com.liu.studentmanagement.common.enums.RoleEnum;
 import com.liu.studentmanagement.entity.dto.UserDTO;
 import com.liu.studentmanagement.service.userService.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +26,17 @@ public class DataInitializer implements CommandLineRunner {
             UserDTO admin = new UserDTO();
             admin.setUsername("admin");
             admin.setPassword("123456"); // 🌟 注意：如果你的 register 方法里有加密逻辑，直接调 register
-            admin.setNickName("系统管理员");
+            admin.setNickname("系统管理员");
+            admin.setRole(RoleEnum.ADMIN.getCode());
+            userService.userRegister(admin);
 
-            userService.userRegister(admin); // 调你写好的带加密的注册逻辑
-            log.info("默认管理员初始化成功！账号：admin，密码：123456");
+            UserDTO student = new UserDTO();
+            student.setUsername("student");
+            student.setPassword("123456"); // 🌟 注意：如果你的 register 方法里有加密逻辑，直接调 register
+            student.setNickname("学生");
+            student.setRole(RoleEnum.STUDENT.getCode());
+            userService.userRegister(student);
+            log.info("默认管理员初始化成功！账号：student，密码：123456");
         }
     }
 }

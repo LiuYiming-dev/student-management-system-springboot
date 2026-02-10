@@ -1,6 +1,7 @@
 package com.liu.studentmanagement;
 
 
+import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.mapper.StudentMapper;
 import org.junit.jupiter.api.Assertions;
@@ -24,5 +25,14 @@ public class StudentMapperTest {
         Assertions.assertEquals(14, list.size());
         // 打印结果
         list.forEach(System.out::println);
+    }
+
+    @Test
+    public void justTestEnums() {
+        GenderEnum genderEnum = GenderEnum.MALE;
+        System.out.println(genderEnum);
+        for (GenderEnum gender : GenderEnum.values()) {
+            System.out.println(gender);
+        }
     }
 }

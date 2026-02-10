@@ -1,6 +1,7 @@
 package com.liu.studentmanagement.config.interceptor;
 
 import com.liu.studentmanagement.common.BaseContext;
+import com.liu.studentmanagement.common.enums.RoleEnum;
 import com.liu.studentmanagement.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,14 +30,23 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         try {
-            // 3. 尝试解析 Token
-            Claims claims = JwtUtils.parseToken(token);
-            Integer userId = (Integer) claims.get("userId");
-            BaseContext.setCurrentId(userId);
-            // 🌟 进阶技巧：把解析出来的用户ID存入 request，方便后续 Controller 使用
-            request.setAttribute("currentUserId", claims.get("userId"));
 
-            return true; // 验证通过，放行
+            Claims claims = JwtUtils.parseToken(token);// 3. 尝试解析 Token
+            Integer userId = (Integer) claims.get("userId");
+
+            String roleCode = claims.get("role").toString();
+
+            if (RoleEnum.getByCode(roleCode) == RoleEnum.STUDENT) {
+                String method = request.getMethod();
+                if (!"GET".equals(method)) {
+                    response.setStatus(403);
+                    response.getWriter().write("权限不足：学生账号禁止此操作");
+                    return false;
+                }
+            }
+            BaseContext.setCurrentId(userId);
+            request.setAttribute("currentUserId", claims.get("userId")); // 🌟 进阶技巧：把解析出来的用户ID存入 request，方便后续 Controller 使用
+            return true;
         } catch (Exception e) {
             response.setStatus(401);
             response.getWriter().write("Invalid or expired token!");
@@ -44,7 +54,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
     }
 
-    // 🌟 别忘了写这个：请求结束后清理口袋
+
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         BaseContext.remove();
