@@ -7,8 +7,11 @@ import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 
 @RestController // 表示返回的是数据不是页面
@@ -32,7 +35,6 @@ public class StudentController {
         studentService.addStudent(studentDTO);
         return Result.success(null);
     }
-
 
 
     /**
@@ -76,10 +78,9 @@ public class StudentController {
         return Result.success(student);
     }
 
-
-
-
-
-
-
+    @GetMapping("/export")
+    @Operation(summary = "导出学生信息")
+    public void exportStudent(HttpServletResponse response) throws IOException {
+        studentService.exportStudent(response);
+    }
 }

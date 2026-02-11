@@ -1,14 +1,15 @@
 package com.liu.studentmanagement.controller;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liu.studentmanagement.service.clazzService.IClazzService;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Clazz;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -51,4 +52,14 @@ public class ClazzController {
     public Result<List<Clazz>> all() {
         return Result.success(clazzService.listAll());
     }
+
+    @GetMapping("/export")
+    @Operation(summary = "export class table excel")
+    public Result<?> exportClazz(HttpServletResponse response) throws IOException {
+        clazzService.clazzExport(response);
+        return Result.success(null);
+    }
+
+
+
 }

@@ -5,8 +5,7 @@
     <select id="selectStudentPage" resultType="com.liu.studentmanagement.entity.vo.StudentVO">
         SELECT
         s.*,
-        c.class_name as className,
-        c.teacher_name as teacherName
+        c.class_name as className
         FROM student s
         LEFT JOIN clazz c ON s.clazz_id = c.id
         <where>
@@ -49,5 +48,16 @@
         FROM student
         WHERE deleted = 0
     </select>
+
+    <select id="selectAllStudents" resultType="com.liu.studentmanagement.entity.vo.StudentExcelVO">
+        SELECT
+            s.*,
+            c.class_name as className
+        FROM      student s
+        LEFT JOIN clazz c ON s.clazz_id = c.id
+        WHERE s.deleted = 0
+    </select>
+
+
 
 </mapper>

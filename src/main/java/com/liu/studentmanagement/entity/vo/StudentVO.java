@@ -10,5 +10,4 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StudentVO extends Student {
     private String className;
-    private String teacherName;
 }

@@ -2,6 +2,7 @@ package com.liu.studentmanagement.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.liu.studentmanagement.entity.Student;
+import com.liu.studentmanagement.entity.vo.StudentExcelVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import org.apache.ibatis.annotations.*;
 
@@ -15,4 +16,5 @@ public interface StudentMapper extends BaseMapper<Student> {
     List<Map<String, Object>> countByGender();
     List<Map<String, Object>> countByClass();
     Double averageAge();
+    List<StudentExcelVO> selectAllStudents();
 }

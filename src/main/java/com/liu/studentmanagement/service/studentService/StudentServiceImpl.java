@@ -1,5 +1,6 @@
 package com.liu.studentmanagement.service.studentService;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -8,12 +9,18 @@ import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.DashboardVO;
+import com.liu.studentmanagement.entity.vo.StudentExcelVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import com.liu.studentmanagement.mapper.StudentMapper;
 import com.liu.studentmanagement.service.clazzService.IClazzService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -49,6 +56,23 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return dashboardVO;
     }
 
+        @Override
+        public void exportStudent(HttpServletResponse response) {
+            try{
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setCharacterEncoding("utf-8");
+                String fileName = URLEncoder.encode("students", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+                response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+
+                List<StudentExcelVO> list = baseMapper.selectAllStudents();
+                EasyExcel.write(response.getOutputStream(), StudentExcelVO.class).sheet("students").doWrite(list);
+            }catch (Exception e){
+                log.error("导出学生Excel失败", e);
+                throw new RuntimeException("导出失败：" + e.getMessage());
+            }
+        }
+
+
     @Override
     public void updateStudent(StudentDTO studentDTO) {
         Student student = new Student();
@@ -63,8 +87,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public void addStudent(StudentDTO studentDTO) {
-        // 使用 log.info 记录关键业务信息
-        // 使用 {} 占位符，这是 SLF4J 的标准写法，效率高且优雅
         Integer currentOperatorId = BaseContext.getCurrentId();
         log.info("当前操作人ID是: {}", currentOperatorId);
         Student student = new Student();
