@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.common.BaseContext;
 import com.liu.studentmanagement.common.enums.GenderEnum;
+import com.liu.studentmanagement.entity.Clazz;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.DashboardVO;
@@ -17,16 +18,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
-    final
-    IClazzService classService;
+    private final IClazzService classService;
 
     public StudentServiceImpl(IClazzService classService) {
         this.classService = classService;
@@ -102,6 +104,31 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
         this.save(student);
         log.info("学生添加成功，数据库分配ID：{}", student.getId());
+    }
+
+    public List<StudentExcelVO> selectAllStudents() {
+        return baseMapper.selectAllStudents();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void importStudentExcel(List<StudentExcelVO> list) {
+        Map<String, Integer> classMap = classService.list().stream()
+                .collect(Collectors.toMap(Clazz::getClassName, Clazz::getId));
+
+        List<Student> students = list.stream().map(vo -> {
+            Student student = new Student();
+            BeanUtils.copyProperties(vo, student);
+
+            Integer clazzId = classMap.get(vo.getClassName());
+            if (clazzId == null) {
+                throw new RuntimeException("导入失败：找不到名为 [" + vo.getClassName() + "] 的班级，请检查数据库");
+            }
+
+            student.setClazzId(clazzId);
+            return student;
+        }).toList();
+        this.saveBatch(students);
     }
 
 

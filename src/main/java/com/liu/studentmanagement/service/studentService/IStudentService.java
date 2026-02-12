@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.DashboardVO;
+import com.liu.studentmanagement.entity.vo.StudentExcelVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IStudentService extends IService<Student> {
     void addStudent(StudentDTO studentDTO);
@@ -18,4 +20,7 @@ public interface IStudentService extends IService<Student> {
     DashboardVO getDashboardStats();
 
     void exportStudent(HttpServletResponse response) throws IOException;
+
+    List<StudentExcelVO> selectAllStudents();
+    void importStudentExcel(List<StudentExcelVO> list) ;
 }

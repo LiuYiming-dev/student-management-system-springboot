@@ -1,5 +1,8 @@
 package com.liu.studentmanagement.controller;
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.liu.studentmanagement.common.listener.StudentImportListener;
+import com.liu.studentmanagement.entity.vo.StudentExcelVO;
 import com.liu.studentmanagement.service.studentService.IStudentService;
 import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
@@ -10,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -82,5 +86,14 @@ public class StudentController {
     @Operation(summary = "导出学生信息")
     public void exportStudent(HttpServletResponse response) throws IOException {
         studentService.exportStudent(response);
+    }
+
+
+    @PostMapping("/import")
+    @Operation(summary = "从Excel导入学生")
+    public Result<?> importStudent(MultipartFile file) throws IOException {
+        EasyExcel.read(file.getInputStream(), StudentExcelVO.class, new StudentImportListener(studentService::importStudentExcel)).sheet().doRead();
+
+        return Result.success(null);
     }
 }
