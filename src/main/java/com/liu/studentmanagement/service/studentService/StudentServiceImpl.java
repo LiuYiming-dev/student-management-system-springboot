@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liu.studentmanagement.common.BaseContext;
+import com.liu.studentmanagement.common.annotation.AutoLog;
 import com.liu.studentmanagement.common.enums.GenderEnum;
 import com.liu.studentmanagement.entity.Clazz;
 import com.liu.studentmanagement.entity.Student;
@@ -34,6 +35,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         this.classService = classService;
     }
 
+    @AutoLog(value = "学生模块", action = "删除学生")
     @Override
     public void deleteStudent(Integer id) {
         if (!this.removeById(id)) {
