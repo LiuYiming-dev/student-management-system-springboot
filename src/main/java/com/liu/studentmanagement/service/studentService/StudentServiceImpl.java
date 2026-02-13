@@ -18,21 +18,25 @@ import com.liu.studentmanagement.service.clazzService.IClazzService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
     private final IClazzService classService;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public StudentServiceImpl(IClazzService classService) {
+    public StudentServiceImpl(IClazzService classService, RedisTemplate<String, Object> redisTemplate) {
         this.classService = classService;
+        this.redisTemplate = redisTemplate;
     }
 
     @AutoLog(value = "学生模块", action = "删除学生")
@@ -41,6 +45,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         if (!this.removeById(id)) {
             throw new RuntimeException("删除失败，ID不存在");
         }
+        redisTemplate.delete("dashboard:stats");
     }
 
     @Override
@@ -51,12 +56,24 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public DashboardVO getDashboardStats() {
+        String cacheKey = "dashboard:stats";
+
+        // 1. 🌟 尝试从 Redis 拿货
+        DashboardVO cachedVo = (DashboardVO) redisTemplate.opsForValue().get(cacheKey);
+        if (cachedVo != null) {
+            log.info("--- 命中缓存，直接返回看板数据 ---");
+            return cachedVo;
+        }
+        // 2. 缓存没命中，去查数据库
+        log.info("--- 缓存未命中，执行 SQL 计算 ---");
+
         DashboardVO dashboardVO = new DashboardVO();
         dashboardVO.setTotalStudents(this.count(new LambdaQueryWrapper<Student>().eq(Student::getDeleted, 0)));
         dashboardVO.setTotalClasses(classService.count());
         dashboardVO.setAvgAge(baseMapper.averageAge());
         dashboardVO.setGenderData(baseMapper.countByGender());
         dashboardVO.setClassData(baseMapper.countByClass());
+        redisTemplate.opsForValue().set(cacheKey, dashboardVO, 1, TimeUnit.HOURS);
         return dashboardVO;
     }
 
@@ -87,6 +104,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         if (!this.updateById(student)) {
             throw new RuntimeException("修改失败，ID不存在");
         }
+        redisTemplate.delete("dashboard:stats");
     }
 
     @Override
@@ -105,6 +123,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         else log.info("正在录入一名女同学");
 
         this.save(student);
+        redisTemplate.delete("dashboard:stats");
         log.info("学生添加成功，数据库分配ID：{}", student.getId());
     }
 
