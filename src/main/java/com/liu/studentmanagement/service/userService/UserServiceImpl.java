@@ -8,6 +8,7 @@ import com.liu.studentmanagement.common.enums.RoleEnum;
 import com.liu.studentmanagement.entity.User;
 import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
 import com.liu.studentmanagement.entity.dto.UserDTO;
+import com.liu.studentmanagement.entity.dto.UserUpdateDTO;
 import com.liu.studentmanagement.mapper.UserMapper;
 import com.liu.studentmanagement.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +82,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
         this.updateById(user);
         log.info("用户 {} 修改密码成功", user.getUsername());
+    }
+
+    @Override
+    public void updateUserInfo(UserUpdateDTO dto) {
+        // 1. 从 ThreadLocal 掏出当前登录人的 ID
+        Integer userId = BaseContext.getCurrentId();
+
+        // 2. 查出数据库里的原对象
+        User user = this.getById(userId);
+        if (user == null) throw new RuntimeException("用户不存在");
+
+        // 3. 只修改允许修改的字段
+        user.setNickname(dto.getNickname());
+        user.setAvatar(dto.getAvatar());
+
+        // 4. 更新数据库
+        this.updateById(user);
+        log.info("用户 {} 更新了个人资料", user.getUsername());
     }
 
 

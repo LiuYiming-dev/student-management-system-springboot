@@ -39,5 +39,8 @@ public class User {
     @NotNull(message = "权限不能为空")
     private RoleEnum role;
 
+    @Schema(description = "avatar")
+    private String avatar;
+
 
 }

@@ -2,6 +2,7 @@ package com.liu.studentmanagement.controller;
 
 import com.liu.studentmanagement.entity.User;
 import com.liu.studentmanagement.entity.dto.PasswordUpdateDTO;
+import com.liu.studentmanagement.entity.dto.UserUpdateDTO;
 import com.liu.studentmanagement.entity.vo.LoginVO;
 import com.liu.studentmanagement.entity.vo.UserVO;
 import com.liu.studentmanagement.service.userService.UserServiceImpl;
@@ -51,4 +52,13 @@ public class UserController {
         userService.updatePassword(passwordUpdateDTO);
         return Result.success(null);
     }
+
+    @PutMapping("/update")
+    @Operation(summary = "修改当前登录用户密码")
+    public Result<?> updateUserInfo(@RequestBody @Validated UserUpdateDTO userUpdateDTO) {
+        userService.updateUserInfo(userUpdateDTO);
+        return Result.success(null);
+    }
+
+
 }
