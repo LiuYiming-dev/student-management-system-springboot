@@ -3,6 +3,7 @@ package com.liu.studentmanagement.config;
 import com.liu.studentmanagement.config.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -24,7 +25,15 @@ public class WebConfig implements WebMvcConfigurer {
                         "/doc.html",      // 文档页面不能拦
                         "/webjars/**",
                         "/v3/api-docs/**",
-                        "/swagger-resources/**"
+                        "/swagger-resources/**",
+                        "/images/**"
                 );
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 🌟 将 Web 虚拟路径 /images/** 映射到本地硬盘真实路径
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file:D:/upload/student_management/");
     }
 }

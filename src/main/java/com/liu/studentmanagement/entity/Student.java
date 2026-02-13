@@ -63,4 +63,7 @@ public class Student {
     @Schema(description = "更新管理员")
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Integer updateByUserId;
+
+    @Schema(description = "头像")
+    private String avatar;
 }

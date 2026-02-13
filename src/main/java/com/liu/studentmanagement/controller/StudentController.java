@@ -15,7 +15,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 
 @RestController // 表示返回的是数据不是页面
@@ -95,5 +97,23 @@ public class StudentController {
         EasyExcel.read(file.getInputStream(), StudentExcelVO.class, new StudentImportListener(studentService::importStudentExcel)).sheet().doRead();
 
         return Result.success(null);
+    }
+
+    @PostMapping("/upload")
+    public Result<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
+        // 1. 定义存储路径
+        String folder = "D:/upload/student_management/";
+        File dir = new File(folder);
+        if (!dir.exists()) dir.mkdirs();
+
+        // 2. 生成新文件名
+        String fileName = UUID.randomUUID() + ".jpg";
+
+        // 3. 保存文件
+        file.transferTo(new File(folder + fileName));
+
+        // 4. 🌟 返回虚拟路径（对应 WebConfig 里的映射）
+        String url = "http://localhost:8080/images/" + fileName;
+        return Result.success(url);
     }
 }

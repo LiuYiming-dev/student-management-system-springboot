@@ -39,7 +39,8 @@ public class StudentDTO {
     @NotBlank(message = "电话号码不能为空")
     private String phoneNumber;
 
-
+    @Schema(description = "头像")
+    private String avatar;
 
 
 }
