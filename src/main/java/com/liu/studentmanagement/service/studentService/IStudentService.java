@@ -9,7 +9,6 @@ import com.liu.studentmanagement.entity.vo.StudentExcelVO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IStudentService extends IService<Student> {
@@ -19,7 +18,7 @@ public interface IStudentService extends IService<Student> {
     Page<StudentVO> getStudentVOPage(Integer pageNum, Integer pageSize, String name);
     DashboardVO getDashboardStats();
 
-    void exportStudent(HttpServletResponse response) throws IOException;
+    void exportStudent(HttpServletResponse response);
 
     List<StudentExcelVO> selectAllStudents();
     void importStudentExcel(List<StudentExcelVO> list) ;

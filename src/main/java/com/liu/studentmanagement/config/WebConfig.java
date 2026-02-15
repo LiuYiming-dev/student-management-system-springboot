@@ -1,18 +1,23 @@
 package com.liu.studentmanagement.config;
 
 import com.liu.studentmanagement.config.interceptor.JwtInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@Slf4j
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     private final JwtInterceptor jwtInterceptor;
+    private final String uploadPath;
 
-    public WebConfig(JwtInterceptor jwtInterceptor) {
+    public WebConfig(JwtInterceptor jwtInterceptor, @Value("${file.upload-path}") String uploadPath) {
         this.jwtInterceptor = jwtInterceptor;
+        this.uploadPath = uploadPath;
     }
 
     @Override
@@ -34,6 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 🌟 将 Web 虚拟路径 /images/** 映射到本地硬盘真实路径
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:D:/upload/student_management/");
+                .addResourceLocations("file:" + uploadPath);
+        log.info("当前图片映射的物理路径为: file:{}", uploadPath);
     }
 }

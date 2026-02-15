@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("Clazz")
+@TableName("clazz")
 @Schema(description = "班级实体类")
 public class Clazz {
 

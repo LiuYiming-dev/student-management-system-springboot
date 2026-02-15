@@ -8,9 +8,11 @@ import com.liu.studentmanagement.common.Result;
 import com.liu.studentmanagement.entity.Student;
 import com.liu.studentmanagement.entity.dto.StudentDTO;
 import com.liu.studentmanagement.entity.vo.StudentVO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +29,11 @@ import java.util.UUID;
 public class StudentController {
 
     private final IStudentService studentService;
+    private final String uploadPath;
 
-    public StudentController(IStudentService studentService) {
+    public StudentController(IStudentService studentService, @Value("${file.upload-path}") String uploadPath) {
         this.studentService = studentService;
+        this.uploadPath = uploadPath;
     }
 
     /**
@@ -86,7 +90,7 @@ public class StudentController {
 
     @GetMapping("/export")
     @Operation(summary = "导出学生信息")
-    public void exportStudent(HttpServletResponse response) throws IOException {
+    public void exportStudent(HttpServletResponse response) {
         studentService.exportStudent(response);
     }
 
@@ -102,15 +106,14 @@ public class StudentController {
     @PostMapping("/upload")
     public Result<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         // 1. 定义存储路径
-        String folder = "D:/upload/student_management/";
-        File dir = new File(folder);
+        File dir = new File(uploadPath);
         if (!dir.exists()) dir.mkdirs();
 
         // 2. 生成新文件名
         String fileName = UUID.randomUUID() + ".jpg";
 
         // 3. 保存文件
-        file.transferTo(new File(folder + fileName));
+        file.transferTo(new File(uploadPath + fileName));
 
         // 4. 🌟 返回虚拟路径（对应 WebConfig 里的映射）
         String url = "http://localhost:8080/images/" + fileName;
